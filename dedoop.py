@@ -106,7 +106,7 @@ def split_option(option, opt_str, value, parser):
     parser.values.extensions = value.split(',')
 
 def main():
-    prog = optparse.OptionParser('deduper input_dir output_dir')
+    prog = optparse.OptionParser('dedoop input_dir output_dir')
     prog.add_option('-o', '--output',
                     help='where to write the metadata output file')
     prog.add_option('-c', '--csv',

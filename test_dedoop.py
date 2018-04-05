@@ -2,7 +2,7 @@ import os
 import csv
 import json
 import pytest
-import deduper
+import dedoop
 import logging
 import shutil
 
@@ -16,10 +16,10 @@ def setup():
         pass # shutil.rmtree(output_dir)
 
 def test_sha256():
-    assert deduper.get_sha256(os.path.join(input_dir, 'a.jpg')) == 'b6df8058fa818acfd91759edffa27e473f2308d5a6fca1e07a79189b95879953'
+    assert dedoop.get_sha256(os.path.join(input_dir, 'a.jpg')) == 'b6df8058fa818acfd91759edffa27e473f2308d5a6fca1e07a79189b95879953'
 
 def test_read():
-    m = deduper.Deduper()
+    m = dedoop.Deduper()
     m.read(input_dir)
     assert len(list(m.items())) == 3
 
@@ -27,7 +27,7 @@ def test_write():
     if os.path.isdir(output_dir):
         shutil.rmtree(output_dir)
 
-    m = deduper.Deduper()
+    m = dedoop.Deduper()
     m.read(input_dir)
     m.write(output_dir)
 
@@ -41,12 +41,12 @@ def test_write():
     assert files[4] == 'data.json'
 
 def test_extensions():
-    m = deduper.Deduper()
+    m = dedoop.Deduper()
     m.read(input_dir, extensions=['jpg'])
     assert len(list(m.items())) == 2 
 
 def test_json():
-    m = deduper.Deduper()
+    m = dedoop.Deduper()
     m.read(input_dir)
     m.write(output_dir)
     data = json.load(open(os.path.join(output_dir, 'data.json')))
