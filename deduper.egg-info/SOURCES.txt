@@ -1,8 +1,0 @@
-README.md
-setup.cfg
-setup.py
-deduper.egg-info/PKG-INFO
-deduper.egg-info/SOURCES.txt
-deduper.egg-info/dependency_links.txt
-deduper.egg-info/entry_points.txt
-deduper.egg-info/top_level.txt
