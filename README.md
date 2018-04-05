@@ -1,5 +1,12 @@
 ## dedoop
 
+In digital preservation work you sometimes may find yourself accepting a disk or
+random assortment of files, and want to go across all of them looking for
+duplicates and copying them to a new location while preserving the original
+paths as metadata to help you process the data. I know, I know this sounds
+pretty esoteric and it is. Never the less that's the use case that dedoop was
+created for.
+
 *dedoop* will recursively read a directory of files and write them out to a new
 directory with the filenames numbered sequentially after de-duplicating them. 
 If a file occurs more than once in the source directory it will only be written
