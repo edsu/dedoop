@@ -21,7 +21,7 @@ pip install dedoop
 % dedoop path/to/source path/to/target
 ```
 
-If the source looks like:
+If the source directory looks like this:
 
 ```
 source
