@@ -1,7 +1,7 @@
 ## dedoop
 
-In digital preservation work you sometimes may find yourself accepting a disk or
-random assortment of files, and want to examine all of them looking for
+In [digital preservation] work you sometimes may find yourself accepting a disk
+or random assortment of files, and want to examine all of them looking for
 duplicates and copying them to a new location while preserving the original
 paths as metadata to help you process the data. I know, I know, this sounds
 pretty esoteric, and it is. Never the less, this is the use case that *dedoop*
@@ -108,3 +108,5 @@ be ignored.
 If you use *--verbose* you will see log messages on the console about what is
 happening. You can optionally send these messages to a log file of your choosing
 using the *--log* option.
+
+[digital preservation]: https://en.wikipedia.org/wiki/Digital_preservation
