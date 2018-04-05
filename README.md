@@ -63,23 +63,23 @@ The *data.json* file will look like:
       "path": "1.png",
       "sha256": "1e89b90b5973baad2e6c3294ffe648ff53ab0b9d75188e9fbb8b38deb9ba3341",
       "original_paths": [
-        "test-data/a.png"
+        "source/a.png"
       ]
     },
     {
       "path": "2.jpg",
       "sha256": "45d257c93e59ec35187c6a34c8e62e72c3e9cfbb548984d6f6e8deb84bac41f4",
       "original_paths": [
-        "test-data/b.jpg",
-        "test-data/c/b.jpg"
+        "source/b.jpg",
+        "source/c/b.jpg"
       ]
     },
     {
       "path": "3.jpg",
       "sha256": "b6df8058fa818acfd91759edffa27e473f2308d5a6fca1e07a79189b95879953",
       "original_paths": [
-        "test-data/a.jpg",
-        "test-data/c/a.jpg"
+        "source/a.jpg",
+        "source/c/a.jpg"
       ]
     }
   ]
@@ -90,9 +90,9 @@ And the *data.csv* file will look like:
 
 ```csv
 path,original_paths,sha256
-1.png,test-data/a.png,1e89b90b5973baad2e6c3294ffe648ff53ab0b9d75188e9fbb8b38deb9ba3341
-2.jpg,"""test-data/b.jpg"",""test-data/c/b.jpg""",45d257c93e59ec35187c6a34c8e62e72c3e9cfbb548984d6f6e8deb84bac41f4
-3.jpg,"""test-data/a.jpg"",""test-data/c/a.jpg""",b6df8058fa818acfd91759edffa27e473f2308d5a6fca1e07a79189b95879953
+1.png,source/a.png,1e89b90b5973baad2e6c3294ffe648ff53ab0b9d75188e9fbb8b38deb9ba3341
+2.jpg,"""source/b.jpg"",""source/c/b.jpg""",45d257c93e59ec35187c6a34c8e62e72c3e9cfbb548984d6f6e8deb84bac41f4
+3.jpg,"""source/a.jpg"",""source/c/a.jpg""",b6df8058fa818acfd91759edffa27e473f2308d5a6fca1e07a79189b95879953
 ```
 
 ## Options
