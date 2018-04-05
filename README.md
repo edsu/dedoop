@@ -1,18 +1,19 @@
 ## dedoop
 
 In digital preservation work you sometimes may find yourself accepting a disk or
-random assortment of files, and want to go across all of them looking for
+random assortment of files, and want to examine all of them looking for
 duplicates and copying them to a new location while preserving the original
-paths as metadata to help you process the data. I know, I know this sounds
-pretty esoteric and it is. Never the less that's the use case that dedoop was
-created for.
+paths as metadata to help you process the data. I know, I know, this sounds
+pretty esoteric, and it is. Never the less, this is the use case that *dedoop*
+was created for.
 
-*dedoop* will recursively read a directory of files and write them out to a new
-directory with the filenames numbered sequentially after de-duplicating them. 
-If a file occurs more than once in the source directory it will only be written
-once to the target directory. A JSON file for each file will also be written to
-the target directory which includes the target filename as well as the path(s)
-for the original data.
+*dedoop* will recursively read a source directory of files and write them out to
+a new target directory with the filenames numbered sequentially after
+de-duplicating them. If a given file occurs more than once in the source
+directory it will only be written once to the target directory. A JSON file for
+each file will also be written to the target directory which includes the target
+filename as well as the path(s) used in the source directory. The files are
+compared by computing a sha256 digest.
 
 ## Install
 
@@ -28,7 +29,7 @@ pip install dedoop
 % dedoop path/to/source path/to/target
 ```
 
-If the source directory looks like this:
+So for example if the source directory looks like this:
 
 ```
 source
@@ -49,10 +50,11 @@ target
 ├── 1.png
 ├── 2.jpg
 ├── 3.jpg
+├── data.csv
 └── data.json
 ```
 
-and the *data.json* file will look like:
+The *data.json* file will look like:
 
 ```javascript
 {
@@ -84,7 +86,7 @@ and the *data.json* file will look like:
 }
 ```
 
-and a *data.csv* file that looks like:
+And the *data.csv* file will look like:
 
 ```csv
 path,original_paths,sha256
