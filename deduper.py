@@ -20,6 +20,10 @@ class Deduper():
             for filename in filenames:
                 path = os.path.join(dirpath, filename)
 
+                if filename.startswith('.'):
+                    logging.info('ignoring dot file', path)
+                    continue
+
                 name, ext = os.path.splitext(path)
                 if extensions and ext.lower().strip('.') not in extensions:
                     logging.info('ignoring %s', path)
