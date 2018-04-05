@@ -47,7 +47,7 @@ target
 
 and the *data.json* file will look like:
 
-```json
+```javascript
 {
   "items": [
     {
@@ -77,7 +77,7 @@ and the *data.json* file will look like:
 }
 ```
 
-and a CSV that looks like:
+and a *data.csv* file that looks like:
 
 ```csv
 path,original_paths,sha256
@@ -86,3 +86,12 @@ path,original_paths,sha256
 3.jpg,"""test-data/a.jpg"",""test-data/c/a.jpg""",b6df8058fa818acfd91759edffa27e473f2308d5a6fca1e07a79189b95879953
 ```
 
+## Options
+
+You can give the *--extensions* command line option a comma separated list of
+file extensions to duplicate. All non-matching files (case insensitive) will
+be ignored.
+
+```
+% dedoop --extensions jpg,png path/to/source path/to/target
+```
