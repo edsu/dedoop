@@ -38,13 +38,14 @@ class Deduper():
 
         id = 0
         num_digits = len(str(len(self.db.keys())))
-        path_format = r'%0' + str(num_digits) + 'i%s'
+        path_format = r'%0' + str(num_digits) + 'i'
 
         for sha256, meta in self.items():
             id += 1
             src = meta['paths'][0]
             filename, ext = os.path.splitext(src)
-            dst = os.path.join(out_dir, path_format % (id, ext))
+            ext = ext.lower()
+            dst = os.path.join(out_dir, path_format % id + ext))
             shutil.copyfile(src, dst)
             meta['path'] = dst.replace(out_dir + os.sep, '')
             logging.info('copied %s to %s', src, dst)

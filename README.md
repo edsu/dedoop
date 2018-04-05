@@ -10,10 +10,10 @@ the use case that *dedoop* was created for.
 *dedoop* will recursively read a source directory of files and write them out to
 a new target directory with the filenames numbered sequentially after
 de-duplicating them. If a given file occurs more than once in the source
-directory it will only be written once to the target directory. A JSON file for
-each file will also be written to the target directory which includes the target
-filename as well as the path(s) used in the source directory. The files are
-compared by computing a sha256 digest.
+directory it will only be written once to the target directory. A JSON file will
+also be written to the target directory which includes the target filename as
+well as all the path(s) used in the source directory. The files are compared by
+computing a sha256 digest.
 
 ## Install
 
