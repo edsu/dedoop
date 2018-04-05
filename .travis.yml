@@ -1,0 +1,17 @@
+language: python
+
+branches:
+  only:
+    - master
+
+python:
+  - '3.6'
+
+install:
+  - python setup.py install
+
+script:
+  - python setup.py test
+
+after_failure:
+  - cat test.log

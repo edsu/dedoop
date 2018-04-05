@@ -1,5 +1,7 @@
 ## dedoop
 
+[![Build Status](https://secure.travis-ci.org/edsu/dedoop.png)](http://travis-ci.org/edsu/dedoop)
+
 In [digital preservation] work you sometimes may find yourself accepting a disk
 or random assortment of files, and want to examine all of them looking for
 duplicates and copy them to a new location in a uniform way, while preserving
