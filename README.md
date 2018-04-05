@@ -20,7 +20,7 @@ computing a sha256 digest.
 Install Python 3 and:
 
 ```
-pip install dedoop
+% pip install dedoop
 ```
 
 ## Usage 
