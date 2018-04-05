@@ -95,3 +95,7 @@ be ignored.
 ```
 % dedoop --extensions jpg,png path/to/source path/to/target
 ```
+
+If you use *--verbose* you will see log messages on the console about what is
+happening. You can optionally send these messages to a log file of your choosing
+using the *--log* option.

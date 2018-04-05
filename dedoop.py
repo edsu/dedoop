@@ -107,10 +107,6 @@ def split_option(option, opt_str, value, parser):
 
 def main():
     prog = optparse.OptionParser('dedoop input_dir output_dir')
-    prog.add_option('-o', '--output',
-                    help='where to write the metadata output file')
-    prog.add_option('-c', '--csv',
-                    help='write metadata as CSV instead of the default JSON')
     prog.add_option('-e', '--extensions', action='callback', type='string', 
                     default=[], callback=split_option,
                     help='comma separated list of file extensions to process')
