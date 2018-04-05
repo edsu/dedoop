@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import re
 import csv
 import json
 import shutil
@@ -45,7 +46,12 @@ class Deduper():
             src = meta['paths'][0]
             filename, ext = os.path.splitext(src)
             ext = ext.lower()
-            dst = os.path.join(out_dir, path_format % id + ext))
+           
+            # if it doesn't look like an extension don't use it
+            if not re.match('^\.[a-z0-9]+$', ext):
+                ext = ''
+
+            dst = os.path.join(out_dir, path_format % id + ext)
             shutil.copyfile(src, dst)
             meta['path'] = dst.replace(out_dir + os.sep, '')
             logging.info('copied %s to %s', src, dst)

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name = 'dedoop',
-    version = '0.0.2',
+    version = '0.0.3',
     author = 'Ed Summers',
     author_email = 'ehs@pobox.com',
     url = 'https://github.com/edsu/dedoop',
