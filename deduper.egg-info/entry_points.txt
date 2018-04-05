@@ -1,0 +1,3 @@
+[console_scripts]
+deduper = deduper:main
+

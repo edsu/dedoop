@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: deduper
+Version: 0.0.1
+Summary: dedupe a directory of files and subdirectories
+Home-page: https://github.com/edsu/deduper
+Author: Ed Summers
+Author-email: ehs@pobox.com
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
