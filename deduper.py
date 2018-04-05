@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import csv
 import json
 import shutil
 import hashlib
@@ -45,6 +46,7 @@ class Deduper():
             logging.info('copied %s to %s', src, dst)
 
         self.write_json(out_dir)
+        self.write_csv(out_dir)
 
     def add(self, path):
         sha256 = get_sha256(path)
@@ -68,6 +70,22 @@ class Deduper():
                 'original_paths': meta['paths'],
             })
         json.dump(data, open(os.path.join(out_dir, 'data.json'), 'w'), indent=2)
+
+    def write_csv(self, out_dir):
+        fieldnames = ['path', 'original_paths', 'sha256']
+        fh = open(os.path.join(out_dir, 'data.csv'), 'w')
+        writer = csv.DictWriter(fh, fieldnames=fieldnames)
+        writer.writeheader()
+        for sha256, meta in self.items():
+            if len(meta['paths']) == 1:
+                original_paths = meta['paths'][0]
+            else:
+                original_paths = ','.join(['"%s"' % p for p in meta['paths']])
+            writer.writerow({
+                'path': meta['path'],
+                'sha256': meta['sha256'],
+                'original_paths': original_paths
+            })
 
 def get_sha256(path):
     h = hashlib.sha256()
