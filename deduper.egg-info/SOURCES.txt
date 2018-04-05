@@ -1,4 +1,4 @@
-deduper.py
+README.md
 setup.cfg
 setup.py
 deduper.egg-info/PKG-INFO

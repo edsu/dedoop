@@ -1,11 +1,19 @@
 ## dedoop
 
 *dedoop* will recursively read a directory of files and write them out to a new
-directory with the filenames numbered sequentially after de-duplicating them.  
+directory with the filenames numbered sequentially after de-duplicating them. 
 If a file occurs more than once in the source directory it will only be written
 once to the target directory. A JSON file for each file will also be written to
 the target directory which includes the target filename as well as the path(s)
 for the original data.
+
+## Install
+
+Install Python 3 and:
+
+```
+pip install dedoop
+```
 
 ## Usage 
 
@@ -77,3 +85,4 @@ path,original_paths,sha256
 2.jpg,"""test-data/b.jpg"",""test-data/c/b.jpg""",45d257c93e59ec35187c6a34c8e62e72c3e9cfbb548984d6f6e8deb84bac41f4
 3.jpg,"""test-data/a.jpg"",""test-data/c/a.jpg""",b6df8058fa818acfd91759edffa27e473f2308d5a6fca1e07a79189b95879953
 ```
+
