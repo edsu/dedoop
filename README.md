@@ -38,11 +38,9 @@ source
 ├── a.jpg
 ├── a.png
 ├── b.jpg
-├── c
-│   ├── a.jpg
-│   └── b.jpg
-└── c.jpg
-    └── a.jpg
+└── c
+    ├── a.jpg
+    └── b.jpg
 ```
 
 The resulting target will look like:
