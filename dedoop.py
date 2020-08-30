@@ -22,7 +22,7 @@ class Deduper():
                 path = os.path.join(dirpath, filename)
 
                 if filename.startswith('.'):
-                    logging.info('ignoring dot file', path)
+                    logging.info('ignoring dot file: %s', path)
                     continue
 
                 name, ext = os.path.splitext(path)
@@ -37,12 +37,9 @@ class Deduper():
             logging.info('creating output directory %s', out_dir)
             os.makedirs(out_dir)
 
-        id = 0
         num_digits = len(str(len(self.db.keys())))
-        path_format = r'%0' + str(num_digits) + 'i'
 
         for sha256, meta in self.items():
-            id += 1
             src = meta['paths'][0]
             filename, ext = os.path.splitext(src)
             ext = ext.lower()
@@ -51,7 +48,7 @@ class Deduper():
             if not re.match('^\.[a-z0-9]+$', ext):
                 ext = ''
 
-            dst = os.path.join(out_dir, path_format % id + ext)
+            dst = os.path.join(out_dir, sha256 + ext)
             shutil.copyfile(src, dst)
             meta['path'] = dst.replace(out_dir + os.sep, '')
             logging.info('copied %s to %s', src, dst)

@@ -3,3 +3,4 @@ test-data-deduped
 .pytest_cache
 *.log
 .eggs
+dedoop.egg-info
