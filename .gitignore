@@ -5,3 +5,4 @@ test-data-deduped
 .eggs
 dedoop.egg-info
 .env
+Pipfile*
