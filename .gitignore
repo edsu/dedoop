@@ -4,3 +4,4 @@ test-data-deduped
 *.log
 .eggs
 dedoop.egg-info
+.env

@@ -9,19 +9,29 @@ import hashlib
 import logging
 import optparse
 
+from urllib.parse import urlparse
+from libcloud.storage.types import Provider, ContainerDoesNotExistError
+from libcloud.storage.providers import get_driver
+
+STORAGE_PROVIDERS = {
+    's3': Provider.S3
+}
+
 class Deduper():
 
-    def __init__(self):
+    def __init__(self, key=None, secret=None):
         self.db = {}
+        self.key = key
+        self.secret = secret
 
-    def read(self, in_dir, extensions=[]):
+    def read(self, in_dir, extensions=[], dotfiles=False):
         self.db = {}
         extensions = [e.lower().strip('.') for e in extensions]
         for dirpath, dirnames, filenames in os.walk(in_dir):
             for filename in filenames:
                 path = os.path.join(dirpath, filename)
 
-                if filename.startswith('.'):
+                if filename.startswith('.') and not dotfiles:
                     logging.info('ignoring dot file: %s', path)
                     continue
 
@@ -32,7 +42,14 @@ class Deduper():
 
                 self.add(path)
 
-    def write(self, out_dir):
+    def write(self, dest):
+        uri = urlparse(dest)
+        if uri.scheme in STORAGE_PROVIDERS.keys():
+            self.write_cloud(dest)
+        else:
+            self.write_fs(dest)
+
+    def write_fs(self, out_dir):
         if not os.path.isdir(out_dir):
             logging.info('creating output directory %s', out_dir)
             os.makedirs(out_dir)
@@ -45,7 +62,7 @@ class Deduper():
             ext = ext.lower()
            
             # if it doesn't look like an extension don't use it
-            if not re.match('^\.[a-z0-9]+$', ext):
+            if not re.match(r'^[.][a-z0-9]+$', ext):
                 ext = ''
 
             dst = os.path.join(out_dir, sha256 + ext)
@@ -53,13 +70,20 @@ class Deduper():
             meta['path'] = dst.replace(out_dir + os.sep, '')
             logging.info('copied %s to %s', src, dst)
 
-        self.write_json(out_dir)
-        self.write_csv(out_dir)
+    def write_cloud(self, container_uri):
+        container = self.get_container(container_uri)
+        storage = container.driver
+
+        for sha256, meta in self.items():
+            src = meta['paths'][0]
+            object_name = sha256
+            storage.upload_object(src, container, object_name)
+            logging.info('copied %s to %s/%s', src, container, object_name)
 
     def add(self, path):
         sha256 = get_sha256(path)
         if sha256 in self.db:
-            logging.warn('found duplicate %s', path)
+            logging.warning('found duplicate %s', path)
             self.db[sha256]['paths'].append(path)
         else:
             self.db[sha256] = {'paths': [path], 'sha256': sha256}
@@ -69,7 +93,7 @@ class Deduper():
         for key in keys:
             yield key, self.db[key]
 
-    def write_json(self, out_dir):
+    def json(self):
         data = {'items': []}
         for sha256, meta in self.items():
             data['items'].append({
@@ -77,23 +101,24 @@ class Deduper():
                 'sha256': meta['sha256'],
                 'original_paths': meta['paths'],
             })
-        json.dump(data, open(os.path.join(out_dir, 'data.json'), 'w'), indent=2)
+        return data
 
-    def write_csv(self, out_dir):
-        fieldnames = ['path', 'original_paths', 'sha256']
-        fh = open(os.path.join(out_dir, 'data.csv'), 'w')
-        writer = csv.DictWriter(fh, fieldnames=fieldnames)
-        writer.writeheader()
-        for sha256, meta in self.items():
-            if len(meta['paths']) == 1:
-                original_paths = meta['paths'][0]
-            else:
-                original_paths = ','.join(['"%s"' % p for p in meta['paths']])
-            writer.writerow({
-                'path': meta['path'],
-                'sha256': meta['sha256'],
-                'original_paths': original_paths
-            })
+    def get_container(self, container_uri):
+        uri = urlparse(container_uri)
+        provider = STORAGE_PROVIDERS.get(uri.scheme)
+        container_name = uri.netloc
+
+        if provider == None:
+            raise Exception('unknown storage provider {}'.format(container_name))
+        
+        storage = get_driver(provider)(self.key, self.secret)
+
+        try:
+            container = storage.get_container(container_name)
+        except ContainerDoesNotExistError:
+            container = storage.create_container(container_name)
+
+        return container
 
 def get_sha256(path):
     h = hashlib.sha256()
@@ -109,11 +134,14 @@ def get_sha256(path):
 def split_option(option, opt_str, value, parser):
     parser.values.extensions = value.split(',')
 
+
 def main():
     prog = optparse.OptionParser('dedoop input_dir output_dir')
     prog.add_option('-e', '--extensions', action='callback', type='string', 
                     default=[], callback=split_option,
                     help='comma separated list of file extensions to process')
+    prog.add_option('-d', '--dotfiles', action='store_true',
+                    help='include dotfiles')
     prog.add_option('-l', '--log')
     prog.add_option('-v', '--verbose', action='store_true')
 
@@ -131,7 +159,7 @@ def main():
     input_dir, output_dir = args
 
     db = Deduper()
-    db.read(input_dir, extensions=opts.extensions)
+    db.read(input_dir, extensions=opts.extensions, dotfiles=opts.dotfiles)
     db.write(output_dir)
 
 if __name__ == "__main__":
