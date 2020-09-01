@@ -96,6 +96,34 @@ def test_write_s3():
     o = container.get_object('b6df8058fa818acfd91759edffa27e473f2308d5a6fca1e07a79189b95879953')
     assert o
 
+def test_write_gs():
+    user = os.environ.get('DEDOOP_USER')
+    assert user
+
+    access_key = os.environ.get('DEDOOP_GS_ACCESS_KEY')
+    assert access_key
+
+    access_secret = os.environ.get('DEDOOP_GS_ACCESS_SECRET')
+    assert access_secret
+
+    m = dedoop.Deduper(access_key, access_secret)
+
+    container_name = 'gs://{}-dedoop-test'.format(user)
+    container = get_test_container(m, container_name)
+
+    m.read(input_dir)
+    m.write(container_name)
+
+    o = container.get_object('1e89b90b5973baad2e6c3294ffe648ff53ab0b9d75188e9fbb8b38deb9ba3341')
+    assert o
+
+    o = container.get_object('45d257c93e59ec35187c6a34c8e62e72c3e9cfbb548984d6f6e8deb84bac41f4')
+    assert o
+
+    o = container.get_object('b6df8058fa818acfd91759edffa27e473f2308d5a6fca1e07a79189b95879953')
+    assert o
+
+
 def get_test_container(deduper, container_name):
     container = deduper.get_container(container_name)
 

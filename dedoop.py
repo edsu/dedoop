@@ -14,7 +14,8 @@ from libcloud.storage.types import Provider, ContainerDoesNotExistError
 from libcloud.storage.providers import get_driver
 
 STORAGE_PROVIDERS = {
-    's3': Provider.S3
+    's3': Provider.S3,
+    'gs': Provider.GOOGLE_STORAGE
 }
 
 class Deduper():
@@ -110,8 +111,8 @@ class Deduper():
 
         if provider == None:
             raise Exception('unknown storage provider {}'.format(container_name))
-        
-        storage = get_driver(provider)(self.key, self.secret)
+        else:
+            storage = get_driver(provider)(self.key, self.secret)
 
         try:
             container = storage.get_container(container_name)
