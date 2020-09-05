@@ -5,8 +5,8 @@
 In [digital preservation] work you sometimes may find yourself accepting a disk
 or random assortment of files, and want to examine all of them looking for
 duplicates and copy them to a new location in a uniform way, while preserving
-the original paths as metadata to help you process the data. This is
-the use case that *dedoop* was created for.
+the original paths as metadata to help you process the data. Ok, maybe this is a
+bit of niche use case, but this is what *dedoop* was created for.
 
 *dedoop* will recursively read a source directory of files and write them out to
 a new target directory or bucket in the cloud using the files's SHA256 checksum
