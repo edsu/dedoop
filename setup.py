@@ -8,8 +8,8 @@ setup(
     url = 'https://github.com/edsu/dedoop',
     py_modules = ['dedoop',],
     description = 'dedupe files and send them to the cloud',
-    install_requires = ['apache-libcloud', 'python-dotenv'],
+    install_requires = ['apache-libcloud', 'click'],
     setup_requires=['pytest-runner'],
-    tests_require = ['pytest'],
+    tests_require = ['pytest', 'python-dotenv'],
     entry_points = {'console_scripts': ['dedoop = dedoop:main']},
 )

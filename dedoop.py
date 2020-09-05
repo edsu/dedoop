@@ -4,6 +4,7 @@ import os
 import re
 import csv
 import json
+import click
 import shutil
 import hashlib
 import logging
@@ -17,6 +18,38 @@ STORAGE_PROVIDERS = {
     's3': Provider.S3,
     'gs': Provider.GOOGLE_STORAGE
 }
+
+
+def main():
+    cli()
+
+
+    prog = optparse.OptionParser('dedoop input_dir output_dir')
+    prog.add_option('-e', '--extensions', action='callback', type='string', 
+                    default=[], callback=split_option,
+                    help='comma separated list of file extensions to process')
+    prog.add_option('-d', '--dotfiles', action='store_true',
+                    help='include dotfiles')
+    prog.add_option('-l', '--log')
+    prog.add_option('-v', '--verbose', action='store_true')
+
+    (opts, args) = prog.parse_args()
+
+    if len(args) != 2:
+        prog.error('you must supply input and output directories')
+
+    level = logging.INFO if opts.verbose else logging.WARN
+    if opts.log:
+        logging.basicConfig(filename=opts.log, level=level)
+    else:
+        logging.basicConfig(level=level)
+
+    input_dir, output_dir = args
+
+    db = Deduper()
+    db.read(input_dir, extensions=opts.extensions, dotfiles=opts.dotfiles)
+    db.write(output_dir)
+
 
 class Deduper():
 
@@ -135,33 +168,7 @@ def get_sha256(path):
 def split_option(option, opt_str, value, parser):
     parser.values.extensions = value.split(',')
 
-
-def main():
-    prog = optparse.OptionParser('dedoop input_dir output_dir')
-    prog.add_option('-e', '--extensions', action='callback', type='string', 
-                    default=[], callback=split_option,
-                    help='comma separated list of file extensions to process')
-    prog.add_option('-d', '--dotfiles', action='store_true',
-                    help='include dotfiles')
-    prog.add_option('-l', '--log')
-    prog.add_option('-v', '--verbose', action='store_true')
-
-    (opts, args) = prog.parse_args()
-
-    if len(args) != 2:
-        prog.error('you must supply input and output directories')
-
-    level = logging.INFO if opts.verbose else logging.WARN
-    if opts.log:
-        logging.basicConfig(filename=opts.log, level=level)
-    else:
-        logging.basicConfig(level=level)
-
-    input_dir, output_dir = args
-
-    db = Deduper()
-    db.read(input_dir, extensions=opts.extensions, dotfiles=opts.dotfiles)
-    db.write(output_dir)
+cli = click.CommandCollection(sources=[add, ls])
 
 if __name__ == "__main__":
-    main()
+    cli()
